@@ -68,6 +68,7 @@ class ViewController: UIViewController {
         finish.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
         present(finish, animated: true)
         numberOfQuestion = 0
+        score = 0
         return
     }
         
