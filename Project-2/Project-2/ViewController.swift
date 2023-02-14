@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     var score = 0
     var correctAnswer = 0
     var numberOfQuestion = 1
+    var topScore = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,10 @@ class ViewController: UIViewController {
         button3.layer.borderColor = UIColor.lightGray.cgColor
         
         countries += ["estonia", "France", "Germany", "Ireland", "Italy", "Monaco", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
+        
+        let userDefaults = UserDefaults.standard
+        topScore = userDefaults.object(forKey: "topScore") as? Int ?? 0
+        print("Top score is", topScore)
     
         askQuestion()
     }
@@ -64,12 +69,25 @@ class ViewController: UIViewController {
         }
         
     if numberOfQuestion == 11 {
-        let finish = UIAlertController(title: title, message: "Game over. Your final score is \(score).", preferredStyle: .alert)
-        finish.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
-        present(finish, animated: true)
-        numberOfQuestion = 0
-        score = 0
-        return
+        if score <= topScore {
+            let finish = UIAlertController(title: title, message: "Game over. Your final score is \(score).", preferredStyle: .alert)
+            finish.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+            present(finish, animated: true)
+            numberOfQuestion = 0
+            score = 0
+            return
+        } else {
+            let finish = UIAlertController(title: title, message: "Game over. Your final score is \(score). It's a new record", preferredStyle: .alert)
+            finish.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+            present(finish, animated: true)
+            topScore = score
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(topScore, forKey: "topScore")
+            
+            numberOfQuestion = 0
+            score = 0
+            return
+        }
     }
         
     let ab = UIAlertController(title: title, message: "Your score is \(score).", preferredStyle: .alert)
