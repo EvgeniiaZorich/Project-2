@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         button2.layer.borderColor = UIColor.lightGray.cgColor
         button3.layer.borderColor = UIColor.lightGray.cgColor
         
-        countries += ["estonia", "France", "Germany", "Ireland", "Italy", "Monaco", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
+        countries += ["Estonia", "France", "Germany", "Ireland", "Italy", "Monaco", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
         
         let userDefaults = UserDefaults.standard
         topScore = userDefaults.object(forKey: "topScore") as? Int ?? 0
@@ -55,6 +55,9 @@ class ViewController: UIViewController {
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 2, options: [], animations: {
+            sender.imageView?.transform = CGAffineTransform(scaleX: 0.1, y: 2)
+        })
         
         var title: String
         if sender.tag == correctAnswer {
