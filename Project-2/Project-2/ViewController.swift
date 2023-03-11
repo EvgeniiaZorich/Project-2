@@ -38,7 +38,9 @@ class ViewController: UIViewController {
         let userDefaults = UserDefaults.standard
         topScore = userDefaults.object(forKey: "topScore") as? Int ?? 0
         print("Top score is", topScore)
-    
+        
+        registerLocal()
+        scheduleLocal()
         askQuestion()
     }
 
@@ -100,5 +102,35 @@ class ViewController: UIViewController {
         present(ab, animated: true)
     }
     
-}
+    func registerLocal() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if granted {
+                print("Yay!")
+            } else {
+                print("D'oh!")
+            }
+        }
+    }
+    
+    func scheduleLocal() {
+        
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Don not forget about flags"
+        content.body = "It is time to learn"
+        content.categoryIdentifier = "alarm"
+        content.sound = .default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 86400, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+           center.add(request)
+        }
+    }
 
